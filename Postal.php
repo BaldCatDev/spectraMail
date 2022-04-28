@@ -87,6 +87,7 @@ class Postal
         $this->message =  preg_replace('/%SUM%/', $args['sum'], $this->message);
         $this->message =  preg_replace('/%ARG1%/', $args['arg1'], $this->message);
         $this->message =  preg_replace('/%ARG2%/', $args['arg2'], $this->message);
+        $this->message =  preg_replace('/%MAIL%/', $args['mail'], $this->message);
     }
     /**
      * заготовка

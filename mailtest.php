@@ -46,6 +46,7 @@ if ($_FILES['template'] && $_POST['mail']) {
                 <div class="mb-3">
                     <label for="mail" class="form-label">e-mail</label>
                     <input required type="email" class="form-control" name="mail" id="mail"/>
+                    <div class="form-text">текст в HTML шаблоне: %MAIL%</div>
                 </div>
                 <div class="mb-3">
                     <label for="messType" class="form-label">Тема письма</label>
