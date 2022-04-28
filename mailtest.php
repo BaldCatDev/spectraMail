@@ -1,17 +1,21 @@
 <?php
 include 'Postal.php';
 
-if ($_POST) {
-
-    if (!key_exists($_POST['type'], Postal::TOPICS)) {
-        echo 'Топик неизвестный выбрал ты.';
+if ($_FILES['template'] && $_POST['mail']) {
+    // print_r($_FILES['template']);
+    if ($_FILES['template']['error'] !== 0) {
+        echo $_FILES['template']['error'];
     } else {
         $postal = new Postal(
             $_POST['type'],
-            $_POST['mail']
+            $_POST['mail'],
+            $_FILES['template']['tmp_name'],
         );
+        $postal->addArguments( $_POST );
 
+//        $postal->prepare_message();
         $postal->send();
+        $sent = true;
     }
 }
 
@@ -27,17 +31,21 @@ if ($_POST) {
 </head>
 <body>
 <div class="container pt-5">
+    <?php if($sent): ?>
+
     <div class="row">
-        <div class="col-4 offset-4">
+        <div class="alert alert-success" role="alert">
+            Письмо отправлено на <?= $_POST['mail'] ?>
+        </div>
+    </div>
+    <?php endif ?>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12 offset-lg-4 offset-md-3">
             <h2>Тест email</h2>
-            <form action="" method="post">
-                <!--                <div class="mb-3">-->
-                <!--                    <label for="template" class="form-label">Шаблон</label>-->
-                <!--                    <input type="text" class="form-control" name="template" id="template"/>-->
-                <!--                </div>-->
+            <form action="" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="mail" class="form-label">e-mail</label>
-                    <input type="email" class="form-control" name="mail" id="mail"/>
+                    <input required type="email" class="form-control" name="mail" id="mail"/>
                 </div>
                 <div class="mb-3">
                     <label for="messType" class="form-label">Тема письма</label>
@@ -47,6 +55,26 @@ if ($_POST) {
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label for="template" class="form-label">HTML шаблон</label>
+                    <input type="file" name="template">
+                </div>
+                <div class="mb-3">
+                    <label for="arg1" class="form-label">Сумма</label>
+                    <input type="number" class="form-control" name="sum" id="sum"/>
+                    <div class="form-text">текст в HTML шаблоне: %SUM%</div>
+                </div>
+                <div class="mb-3">
+                    <label for="arg1" class="form-label">Доп. аргумент 1</label>
+                    <input type="text" class="form-control" name="arg1" id="arg1"/>
+                    <div class="form-text">текст в HTML шаблоне: %ARG1%</div>
+                </div>
+                <div class="mb-3">
+                    <label for="arg2" class="form-label">Доп. аргумент 2</label>
+                    <input type="text" class="form-control" name="arg2" id="arg2"/>
+                    <div class="form-text">текст в HTML шаблоне: %ARG2%</div>
+                </div>
+
                 <input type="submit" name="Отправить" id="formSend">
             </form>
         </div>
