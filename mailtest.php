@@ -1,5 +1,20 @@
 <?php
-    include 'Postal.php';
+include 'Postal.php';
+
+if ($_POST) {
+
+    if (!key_exists($_POST['type'], Postal::TOPICS)) {
+        echo 'Топик неизвестный выбрал ты.';
+    } else {
+        $postal = new Postal(
+            $_POST['type'],
+            $_POST['mail']
+        );
+
+        $postal->send();
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -15,11 +30,11 @@
     <div class="row">
         <div class="col-4 offset-4">
             <h2>Тест email</h2>
-            <form action="m.php">
-<!--                <div class="mb-3">-->
-<!--                    <label for="template" class="form-label">Шаблон</label>-->
-<!--                    <input type="text" class="form-control" name="template" id="template"/>-->
-<!--                </div>-->
+            <form action="" method="post">
+                <!--                <div class="mb-3">-->
+                <!--                    <label for="template" class="form-label">Шаблон</label>-->
+                <!--                    <input type="text" class="form-control" name="template" id="template"/>-->
+                <!--                </div>-->
                 <div class="mb-3">
                     <label for="mail" class="form-label">e-mail</label>
                     <input type="email" class="form-control" name="mail" id="mail"/>

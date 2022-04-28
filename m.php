@@ -12,4 +12,4 @@ $postal = new Postal(
     $_POST['type'],
     $_POST['mail']
 );
-$postal -> send();;
+$postal -> send();
